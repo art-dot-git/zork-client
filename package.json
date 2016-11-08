@@ -1,0 +1,16 @@
+{
+  "name": "client",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Matt Bierner <mattbierner@gmail.com> (http://mattbierner.com/)",
+  "license": "ISC",
+  "dependencies": {
+    "frotz-interfacer": "^1.4.1",
+    "markdown-escape": "^1.0.1"
+  }
+}
