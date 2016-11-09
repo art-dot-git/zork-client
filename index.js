@@ -1,29 +1,18 @@
-const path = require('path')
-const frotz = require('frotz-interfacer')
-
-const parseCommand = require('./src/command').parse
-const outputResult = require('./src/output').outputResult
-const exec = require('./src/evaluate').exec
-
-const ROOT = __dirname
-
 /**
- * 
+ * Command line pull request processor
  */
-const iterate = (interfacer, logfile, input) =>
-	parseCommand(input).then(command =>
-		execCommand(interfacer, command)
-			.then(result => outputResult(logfile, input, result)))
+const program = require('commander')
+const config = require('./config')
+const githubClient = require('./src/github')
 
-const interfacer = new frotz({
-	executable: path.join(ROOT, '../frotz/dfrotz'),
-	gameImage: path.join(ROOT, 'zork1.z5'),
-	saveFile: path.join(ROOT, 'zork.dat'),
-	outputFilter: frotz.filter
-})
+program
+    .version('0.0.0')
+    .option('--number <number>', 'Pull request to process')
+    .option('--token <token>', 'Github user token')
+    .parse(process.argv)
 
-const logfile = path.join(ROOT, 'log.md')
+const github = githubClient.getClient(program.token)
 
-iterate(interfacer, logfile, 'look. look')
-	.catch(x => console.error(x))
-
+main.handlePullRequest(github, config.user, config.repo_organization, config.repo_name, program.number)
+	.then(_ => console.log(`Successfully processed ${program.number}`))
+	.fail(e => console.log(`Error processing ${program.number} - ${e}`))

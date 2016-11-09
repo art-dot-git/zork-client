@@ -10,7 +10,7 @@ const BRANCH_REGEXP = /^[a-z0-9\-_\.]+$/i
  * 
  */
 const specialCommands = {
-    new: (branchName, targetName) => {
+    new: (branchName) => {
         if (!branchName || branchName.length < MIN_BRANCH_NAME)
             throw 'Input Error: branch name too short'
 
@@ -43,7 +43,7 @@ const normalizeCommand = (input) =>
  * 
  */
 const getSpecialCommand = (input) => {
-    if (input.indexOf('@') !== 0)
+    if (input.indexOf('@@') !== 0)
         return null
 
     const components = input.slice(1).split(/\s+/g)

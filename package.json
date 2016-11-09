@@ -10,7 +10,13 @@
   "author": "Matt Bierner <mattbierner@gmail.com> (http://mattbierner.com/)",
   "license": "ISC",
   "dependencies": {
+    "commander": "^2.9.0",
     "frotz-interfacer": "^1.4.1",
-    "markdown-escape": "^1.0.1"
+    "git-promise": "^0.3.0",
+    "github": "^6.0.3",
+    "github-webhook-handler": "^0.6.0",
+    "markdown-escape": "^1.0.1",
+    "moment": "^2.15.2",
+    "seq-queue": "0.0.5"
   }
 }
