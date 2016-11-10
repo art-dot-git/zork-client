@@ -51,7 +51,7 @@ module.exports.closePr = (github, prNumber, base) => {
             owner: config.repo_organization,
             repo: config.repo_name,
             number: prNumber,
-            base: from,
+            base: base,
             state: 'closed'
         }, err => {
             if (err)

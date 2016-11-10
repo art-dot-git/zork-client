@@ -8,10 +8,10 @@ const command = require('./command')
 const game = require('./game_runner')
 const config = require('../config')
 const ChangeError = require('./change_error')
-const IntputError = require('./input_error')
+const InputError = require('./input_error')
 
 
-const BRANCH_REGEXP = /^[a-z0-9\-_]{3,200}$/i
+const BRANCH_REGEXP = /^[a-z0-9\-_]{1,200}$/i
 
 const gameBranchPrefix = 'game-'
 
@@ -34,6 +34,19 @@ const getPrBranchName = number =>
 /**
  * 
  */
+const getGameBranchName = name => {
+    if (name === 'master')
+        return name
+    
+    if (name.indexOf(gameBranchPrefix) === 0)
+        return name
+
+    return gameBranchPrefix + name
+}
+
+/**
+ * 
+ */
 const isValidFromBranch = branchName =>
     branchName === 'master' || branchName.indexOf(gameBranchPrefix) === 0
 
@@ -42,7 +55,7 @@ const isValidFromBranch = branchName =>
  */
 const onPrError = (github, prNumber, error) =>
     postComment(github, prNumber,
-        `**ERROR PROCESSING PULL REQUEST**\n
+        `**ERROR**
 
 ${mdEscape('' + error)}
 
@@ -61,7 +74,7 @@ const checkoutPr = number => {
     const name = getPrBranchName(number)
     return git(`fetch --update-head-ok origin pull/${number}/head:${name}`)
         .then(_ => git(`checkout -f ${name}`))
-        .then(_ => git(`pull origin HEAD`))
+        .then(_ => git(`pull -f origin pull/${number}/head`))
         .then(_ => name)
         .catch(err => {
             throw `Error checking out PR #${number}: ${err}`
@@ -148,22 +161,15 @@ const tryRunGameCommand = (github, prNumber, prBranch, targetBranch, command) =>
 /**
  * 
  */
-const tryRunBranchCommand = (github, prNumber, from, to) => {
-    if (!isValidFromBranch(from))
-        throw new InputError('Invalid branch')
-
-    to = gameBranchPrefix + to
-
-    return git(`git ls-remote --heads ${config.repo} ${from}`)
-        .then(found => {
-            if (!found.trim().length)
-                throw `No such branch found '${from}'`
-            return from
-        })
-        .then(_ => git(`git ls-remote --heads ${config.repo} ${to}`))
+const tryCreateBranch = (github, prNumber, from, to) =>
+    git(`git ls-remote --heads ${config.repo} ${to}`)
         .then(found => {
             if (found.trim().length)
-                throw `Target branch already exists '${to}'`
+                throw `Target branch '${to}' already exists`
+            
+            if (from === to)
+                throw 'Same branches'
+            
             return to
         })
         .then(_ => git(`checkout -B ${to} ${from}`).fail(_ => { throw "branch creation failed"; }))
@@ -172,9 +178,31 @@ const tryRunBranchCommand = (github, prNumber, from, to) => {
                 return git(`push origin ${to}`).then(_ => result)
             return result
         })
-        .then(_ => postComment(github, prNumber, `Created new game branch [${to}](${config.repo + '/tree/' + to})`))
+        .then(_ => postComment(github, prNumber, `**SUCCESS**\n\nCreated new game branch [${to}](${config.repo + '/tree/' + to})`))
         .then(_ => closePr(github, prNumber, from))
+
+/**
+ * 
+ */
+const tryRunBranchCommand = (github, prNumber, from, to) => {
+    from = getGameBranchName(from)
+    if (!isValidFromBranch(from))
+        throw new InputError('Invalid branch')
+
+    return git(`git ls-remote --heads ${config.repo} ${from}`)
+        .then(found => {
+            if (!found.trim().length)
+                throw `No such branch found '${from}'`
+            return from
+        })
+        .then(_ => tryCreateBranch(github, prNumber, from, getGameBranchName(to)))
 }
+
+/**
+ * 
+ */
+const tryRunNewCommand = (github, prNumber, to) => 
+    tryCreateBranch(github, prNumber, config.new_game_commit, getGameBranchName(to))
 
 /**
  * 
@@ -185,7 +213,7 @@ const tryRunCommand = (github, prNumber, prBranch, targetBranch, command) => {
             return tryRunGameCommand(github, prNumber, prBranch, targetBranch, command)
 
         case 'new':
-            return tryRunBranchCommand(github, prNumber, config.new_game_commit, command.to)
+            return tryRunNewCommand(github, prNumber, command.to)
 
         case 'branch':
             return tryRunBranchCommand(github, prNumber, command.from || targetBranch, command.to)
