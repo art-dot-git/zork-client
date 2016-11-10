@@ -7,7 +7,7 @@ module.exports.getClient = (token) => {
     const github = new GitHubApi({
         version: "3.0.0",
         headers: {
-            "user-agent": "zork-git-client"
+            'user-agent': "zork-git-client"
         }
     })
 

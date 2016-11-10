@@ -4,6 +4,7 @@
 const program = require('commander')
 const config = require('./config')
 const githubClient = require('./src/github')
+const main = require('./src/pull_request')
 
 program
     .version('0.0.0')
@@ -15,4 +16,4 @@ const github = githubClient.getClient(program.token)
 
 main.handlePullRequest(github, config.user, config.repo_organization, config.repo_name, program.number)
 	.then(_ => console.log(`Successfully processed ${program.number}`))
-	.fail(e => console.log(`Error processing ${program.number} - ${e}`))
+	.catch(e => console.log(`Error processing ${program.number} - ${e}`))
