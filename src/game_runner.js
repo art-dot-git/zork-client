@@ -9,6 +9,9 @@ const formatResult = module.exports.formatResult = (result) => {
     if (!result || !result.length)
         return Promise.reject("Internal error: empty result")
 
+    if (result.length === 1)
+        return Promise.resolve(result[0])
+
     const head = `=== ${result[0]} ===`
     const body = result.slice(1).join('\n')
     return Promise.resolve(`${head}\n${body}`)

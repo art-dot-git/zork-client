@@ -35,7 +35,7 @@ const getPrBranchName = number =>
  * 
  */
 const isValidFromBranch = branchName =>
-    branchName.indexOf(gameBranchPrefix) === 0
+    branchName === 'master' || branchName.indexOf(gameBranchPrefix) === 0
 
 /**
  * Handle an error with a pr
@@ -44,7 +44,7 @@ const onPrError = (github, prNumber, error) =>
     postComment(github, prNumber,
         `**ERROR PROCESSING PULL REQUEST**\n
 
-${error}
+${mdEscape('' + error)}
 
 ---
 
@@ -76,7 +76,7 @@ const validateFilesChanged = (diff) => {
         throw new ChangeError("Empty pr")
 
     if (diff.length !== 1 || diff[0].from !== config.log_file_name || diff[0].to !== config.log_file_name)
-        throw new ChangeError("change must only touch README")
+        throw new ChangeError("Change must only touch README")
 
     return diff
 }
@@ -143,13 +143,13 @@ const tryRunGameCommand = (github, prNumber, prBranch, targetBranch, command) =>
                         return git(`push origin ${targetBranch}`).then(_ => result)
                     return result
                 })
-                .then(_ => postComment(github, prNumber, `\\> ${mdEscape(command.value)}\n\n ${mdEscape(result)}`)))
+                .then(_ => postComment(github, prNumber, `**SUCCESS**\n\n\\> ${mdEscape(command.value)}\n\n ${mdEscape(result)}`)))
 
 /**
  * 
  */
 const tryRunBranchCommand = (github, prNumber, from, to) => {
-    if (from !== 'master' && !isValidFromBranch(from))
+    if (!isValidFromBranch(from))
         throw new InputError('Invalid branch')
 
     to = gameBranchPrefix + to
@@ -185,12 +185,12 @@ const tryRunCommand = (github, prNumber, prBranch, targetBranch, command) => {
             return tryRunGameCommand(github, prNumber, prBranch, targetBranch, command)
 
         case 'new':
-            return tryRunBranchCommand(github, prNumber, 'master', command.to)
+            return tryRunBranchCommand(github, prNumber, config.new_game_commit, command.to)
 
         case 'branch':
             return tryRunBranchCommand(github, prNumber, command.from || targetBranch, command.to)
     }
-    throw "Internal Error: unknown command type"
+    throw "Unknown command type"
 }
 
 /**
@@ -201,25 +201,25 @@ const tryMergePullRequest = (github, prNumber, prBranch, targetBranch) =>
         .then(command => tryRunCommand(github, prNumber, prBranch, targetBranch, command))
 
 /**
-*/
+ * Attempt to handle a single pull request object.
+ */
 const processPullRequest = (github, request) => {
     if (!request || !request.head || !request.head.repo || !request.base)
-        return Promise.reject("Error getting pull request")
+        throw "Error getting pull request"
 
     if (request.state !== 'open') {
         console.log(`Not processing non-open pr ${request.number}`)
-        return Promise.resolve('')
+        return ''
     }
 
     const branchName = request.base.ref
-    const otherCloneUrl = request.head.repo.clone_url
     const otherBranch = request.head.ref
     const sha = request.head.sha
 
     console.log('Processing ' + sha)
 
     if (!otherBranch.match(BRANCH_REGEXP) || !branchName.match(BRANCH_REGEXP))
-        return Promise.reject("Invalid branch name")
+        throw "Invalid branch name"
 
     return checkoutPr(request.number)
         .then(prBranch => tryMergePullRequest(github, request.number, prBranch, branchName))

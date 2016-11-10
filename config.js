@@ -25,13 +25,13 @@ module.exports = {
     log_file: path.join(GAME_ROOT, log_file_name),
 
     // Repo
-
     "issue_tracker_url": "https://github.com/art-dot-git/zork-client/issues",
     "about_url": "https://github.com/art-dot-git/zork-client",
 
-    "user": "the-narrator",
+    new_game_commit: "f8f53aee2e56019f7d17eafab0e969659eadb0a5",
 
-    "repo_name": repo_name,
-    "repo_organization": repo_organization,
+    user: "the-gamemaster",
+    repo_name: repo_name,
+    repo_organization: repo_organization,
     repo: `git@github.com:${repo_organization}/${repo_name}.git`
 }
