@@ -18,29 +18,29 @@ const formatResult = module.exports.formatResult = (result) => {
  * Run a command against the saved game state. 
  */
 const exec = (command) => {
-	if (command.type !== 'input')
-		throw 'invalid command type' 
+    if (command.type !== 'input')
+        throw 'invalid command type'
 
-	const interfacer = new frotz({
-		executable: config.frotz_exe,
-		gameImage: config.game_file,
-		saveFile: config.save_file,
-		outputFilter: frotz.filter
-	})
+    const interfacer = new frotz({
+        executable: config.frotz_exe,
+        gameImage: config.game_file,
+        saveFile: config.save_file,
+        outputFilter: frotz.filter
+    })
 
-	return new Promise((resolve, reject) =>
-		interfacer.iteration(command.value, (error, output) => 
-			error && error.error
-				?reject(error.error, interfacer)
-				:resolve(output.pretty, interfacer)))
-		 .then(formatResult)
+    return new Promise((resolve, reject) =>
+        interfacer.iteration(command.value, (error, output) =>
+            error && error.error
+                ? reject(error.error, interfacer)
+                : resolve(output.pretty, interfacer)))
+        .then(formatResult)
 }
 
 /**
  * Run a command against the saved game state and write the results to the log file.
  */
 const iterate = module.exports.iterate = (command) =>
-	exec(command).then(result => {
-		fs.appendFileSync(config.log_file, '\n\n' + result + '\n\n> ')
-		return result
-	})
+    exec(command).then(result => {
+        fs.appendFileSync(config.log_file, '\n\n' + result + '\n\n> ')
+        return result
+    })

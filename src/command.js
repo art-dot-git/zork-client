@@ -3,7 +3,7 @@ const InputError = require('./input_error')
 const MAX_COMMAND_LENGTH = 300
 const COMMAND_REGEXP = /^@?[a-z0-9\-_\.\, \t]+$/i
 
-const MIN_BRANCH_NAME = 4
+const MIN_BRANCH_NAME = 3
 const MAX_BRANCH_NAME = 100
 const BRANCH_REGEXP = /^[a-z0-9\-_\.]+$/i
 
@@ -11,18 +11,21 @@ const BRANCH_REGEXP = /^[a-z0-9\-_\.]+$/i
  * Validates a user provided branch name
  */
 const validateBranchName = (name) => {
-    name = name.trim().toLowerCase();
+    name = (name || '').trim().toLowerCase();
+
+    if (!name.length)
+        return Promise.reject(new InputError('no branch name provided'))
 
     if (name.length < MIN_BRANCH_NAME)
-        throw new InputError('branch name too short')
+        return Promise.reject(new InputError('branch name too short'))
 
     if (name.length > MAX_BRANCH_NAME)
-        throw new InputError('branch name too long')
+        return Promise.reject(new InputError('branch name too long'))
 
-    if (!command.match(BRANCH_REGEXP))
-        throw new InputError('branch name may only contain letters, numbers, dash, and underscore')
+    if (!name.match(BRANCH_REGEXP))
+        return Promise.reject(new InputError('branch name may only contain letters, numbers, dash, and underscore'))
 
-    return name
+    return Promise.resolve(name)
 }
 
 /**
@@ -32,18 +35,28 @@ const specialCommands = {
     new: (branchName) =>
         validateBranchName(branchName).then(name => ({
             type: 'new',
-            name: branchName,
+            to: name,
             value: "@new"
         })),
 
-    branch: (from, to) =>
-        validateBranchName(from).then(from =>
-            validateBranchName(to).then(to => ({
+    branch: (to, from) =>
+        validateBranchName(to).then(to => {
+            if (!from) { 
+                // target current branch
+                return {
+                    type: 'branch',
+                    from: null,
+                    to: to,
+                    value: "@branch"
+                }
+            }
+            return validateBranchName(from).then(from => ({
                 type: 'branch',
                 from: from,
                 to: to,
                 value: "@branch"
-            })))
+            }))
+        })
 }
 
 /**
@@ -56,7 +69,7 @@ const getSpecialCommand = (input) => {
     const components = input.slice(1).split(/\s+/g)
     const special = specialCommands[components[0]]
     if (!special)
-        throw new InputError('Unknown command') 
+        throw new InputError('Unknown command')
     return special.apply(null, components.slice(1))
 }
 

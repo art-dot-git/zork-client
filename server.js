@@ -26,10 +26,10 @@ program
 const port = (program.port || 3000)
 
 const github = new GitHubApi({
-	version: "3.0.0",
-	headers: {
-	    "user-agent": "80x40-client"
-	}
+    version: "3.0.0",
+    headers: {
+        "user-agent": "80x40-client"
+    }
 })
 
 github.authenticate({
@@ -59,7 +59,7 @@ webhookHandler.on('pull_request', (event) => {
                 }
                 task.done()
             })
-        },
+    },
         () => {
             console.error("Timeout")
         })
