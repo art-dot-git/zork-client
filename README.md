@@ -2,9 +2,11 @@
 
 # Zork.git
 
-![](https://github.com/art-dot-git/zork-client/raw/master/documentation/example.gif)
 
 Zork.git is an experiment using git to play a game, in this case, the classic interactive fiction title [Zork]. To start playing, simply [fork the zork.git game repo][game], enter a command by editing the `README`, and submit a PR back against the repo.
+
+![](https://github.com/art-dot-git/zork-client/raw/master/documentation/example.gif)
+
 
 ### How it Works
 The main [Zork.git repo][game] is where the game is played, with the `README` file used for game input and output. The starting `README` file looks something like this:
