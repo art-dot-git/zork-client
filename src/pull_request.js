@@ -103,18 +103,18 @@ const validateChangeContents = (diff, targetFileContents) => {
         throw new ChangeError("No differences with base branch")
 
     if (chunk.newLines > 0 || chunk.oldLines > 0)
-        throw new ChangeError("Change must only add input at end of file")
+        throw new ChangeError("Change must only add input at end of file (1)")
 
     const lineCount = targetFileContents.split(/\r\n|\r|\n/).length
     if (chunk.newStart !== chunk.oldStart || chunk.newStart !== lineCount)
-        throw new ChangeError("Change must only add input at end of file")
+        throw new ChangeError("Change must only add input at end of file (2)")
 
     if (chunk.changes.length !== 2)
-        throw new ChangeError("Change must only add input at end of file")
+        throw new ChangeError("Change must only add input at end of file (3)")
 
     const add = chunk.changes.filter(x => x && x.type === 'add')
     if (add.length !== 1)
-        throw new ChangeError("Change must only add input at end of file")
+        throw new ChangeError("Change must only add input at end of file (4)")
 
     const commandText = add[0].content.replace(/^\+\s*>?/, '')
     return command.parse(commandText)

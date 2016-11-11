@@ -3,11 +3,9 @@
  */
 const path = require('path')
 const fs = require('fs')
-const frotz = require('frotz-interfacer')
 
-const parseCommand = require('./src/command').parse
 const config = require('./config')
-const exec = require('./src/evaluate').iterate
+const exec = require('./src/game_runner').iterate
 
 const removeFile = (path) =>
     fs.existsSync(path) && fs.unlinkSync(path)
