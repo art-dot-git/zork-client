@@ -54,7 +54,7 @@ You are facing the north side of a white house. There is no door here, and all t
 If you run into any issues, please [open a bug against the zork-client repo][issues] and not against the game repo.
 
 
->**💡 Hint**: Use Github's edit button on the `README` file to enter a command, automatically create a branch, and submit a PR entirely online, without ever having to touch a command line.
+> **💡 Hint**: Use Github's edit button on the `README` file to enter a command, automatically create a branch, and submit a PR entirely online, without ever having to touch a command line.
 
 
 > **❗ Important**: Anyone can submit changes to any branch/game. Plan accordingly :)
