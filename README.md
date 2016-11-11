@@ -56,6 +56,7 @@ If you run into any issues, please [open a bug against the zork-client repo][iss
 
 > **💡 Hint**: Use Github's edit button on the `README` file to enter a command, automatically create a branch, and submit a PR entirely online, without ever having to touch a command line.
 
+.
 
 > **❗ Important**: Anyone can submit changes to any branch/game. Plan accordingly :)
 
@@ -69,6 +70,7 @@ A valid pull request must pass a few checks before being automatically merged in
 
 > **❗ Important**: If another PR is merged in before your PR targeting the same branch is processed, you must sync again to ensure your PR has no conflicts and meets all the above requirements. This is annoying, makes sense for this style of gameplay.
 
+.
 
 > **💡 Hint**: If you are having trouble submitting a change due to syncing problems, try creating a new branch and playing on it.
 
