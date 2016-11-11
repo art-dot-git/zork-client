@@ -4,7 +4,7 @@
 "use strict"
 const program = require("commander")
 const http = require('http')
-const main = require('./pull_request')
+const main = require('./src/pull_request')
 const seqqueue = require('seq-queue')
 
 const config = require('./config')
