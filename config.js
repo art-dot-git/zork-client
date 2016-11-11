@@ -33,5 +33,6 @@ module.exports = {
     user: "the-gamemaster",
     repo_name: repo_name,
     repo_organization: repo_organization,
-    repo: `git@github.com:${repo_organization}/${repo_name}.git`
+    repo: `git@github.com:${repo_organization}/${repo_name}.git`,
+    repo_url: `https://github.com/${repo_organization}/${repo_name}`
 }

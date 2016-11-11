@@ -37,7 +37,7 @@ const getPrBranchName = number =>
 const getGameBranchName = name => {
     if (name === 'master')
         return name
-    
+
     if (name.indexOf(gameBranchPrefix) === 0)
         return name
 
@@ -166,10 +166,10 @@ const tryCreateBranch = (github, prNumber, from, to) =>
         .then(found => {
             if (found.trim().length)
                 throw `Target branch '${to}' already exists`
-            
+
             if (from === to)
                 throw 'Same branches'
-            
+
             return to
         })
         .then(_ => git(`checkout -B ${to} ${from}`).fail(_ => { throw "branch creation failed"; }))
@@ -178,7 +178,7 @@ const tryCreateBranch = (github, prNumber, from, to) =>
                 return git(`push origin ${to}`).then(_ => result)
             return result
         })
-        .then(_ => postComment(github, prNumber, `**SUCCESS**\n\nCreated new game branch [${to}](${config.repo + '/tree/' + to})`))
+        .then(_ => postComment(github, prNumber, `**SUCCESS**\n\nCreated new game branch [${to}](${config.repo_url + '/tree/' + to})`))
         .then(_ => closePr(github, prNumber, from))
 
 /**
@@ -201,7 +201,7 @@ const tryRunBranchCommand = (github, prNumber, from, to) => {
 /**
  * 
  */
-const tryRunNewCommand = (github, prNumber, to) => 
+const tryRunNewCommand = (github, prNumber, to) =>
     tryCreateBranch(github, prNumber, config.new_game_commit, getGameBranchName(to))
 
 /**
@@ -250,13 +250,13 @@ const processPullRequest = (github, request) => {
         throw "Invalid branch name"
 
     // Check to see if this is a special command
-    const special = command.getSpecialCommand(request.title);
-    if (special) {
-        return tryRunCommand(github, prNumber, prBranch, targetBranch, special)
-    }
+    return command.getSpecialCommand(request.title).then(special => {
+        if (special)
+            return tryRunCommand(github, request.number, null, branchName, special)
 
-    return checkoutPr(request.number)
-        .then(prBranch => tryMergePullRequest(github, request.number, prBranch, branchName))
+        return checkoutPr(request.number)
+            .then(prBranch => tryMergePullRequest(github, request.number, prBranch, branchName))
+    })
 }
 
 /**

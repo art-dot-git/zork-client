@@ -14,16 +14,16 @@ const validateBranchName = (name) => {
     name = (name || '').trim().toLowerCase();
 
     if (!name.length)
-        return Promise.reject(new InputError('no branch name provided'))
+        return Promise.reject(new InputError('No branch name provided'))
 
     if (name.length < MIN_BRANCH_NAME)
-        return Promise.reject(new InputError('branch name too short'))
+        return Promise.reject(new InputError('Branch name too short'))
 
     if (name.length > MAX_BRANCH_NAME)
-        return Promise.reject(new InputError('branch name too long'))
+        return Promise.reject(new InputError('Branch name too long'))
 
     if (!name.match(BRANCH_REGEXP))
-        return Promise.reject(new InputError('branch name may only contain letters, numbers, dash, and underscore'))
+        return Promise.reject(new InputError('Branch name may only contain letters, numbers, dash, and underscore'))
 
     return Promise.resolve(name)
 }
@@ -64,12 +64,12 @@ const specialCommands = {
  */
 const getSpecialCommand = module.exports.getSpecialCommand = (input) => {
     if (input.indexOf('@') !== 0)
-        return null
+        return Promise.resolve(null)
 
     const components = input.slice(1).split(/\s+/g)
     const special = specialCommands[components[0]]
     if (!special)
-        throw new InputError('Unknown command')
+        throw new InputError('Unknown special command')
     return special.apply(null, components.slice(1))
 }
 

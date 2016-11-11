@@ -44,6 +44,6 @@ const exec = (command) => {
  */
 const iterate = module.exports.iterate = (command) =>
     exec(command).then(result => {
-        fs.appendFileSync(config.log_file, '\n\n' + result + '\n\n> ')
+        fs.appendFileSync(config.log_file, '\n' + result + '\n\n\n> ')
         return result
     })
