@@ -249,6 +249,12 @@ const processPullRequest = (github, request) => {
     if (!otherBranch.match(BRANCH_REGEXP) || !branchName.match(BRANCH_REGEXP))
         throw "Invalid branch name"
 
+    // Check to see if this is a special command
+    const special = command.getSpecialCommand(request.title);
+    if (special) {
+        return tryRunCommand(github, prNumber, prBranch, targetBranch, special)
+    }
+
     return checkoutPr(request.number)
         .then(prBranch => tryMergePullRequest(github, request.number, prBranch, branchName))
 }

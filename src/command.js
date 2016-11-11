@@ -1,7 +1,7 @@
 const InputError = require('./input_error')
 
 const MAX_COMMAND_LENGTH = 500
-const COMMAND_REGEXP = /^@?[a-z0-9\-_\.\, \t]+$/i
+const COMMAND_REGEXP = /^[a-z0-9\-_\.\, \t]+$/i
 
 const MIN_BRANCH_NAME = 1
 const MAX_BRANCH_NAME = 100
@@ -62,7 +62,7 @@ const specialCommands = {
 /**
  * Check if a command is a special (non-game) command.
  */
-const getSpecialCommand = (input) => {
+const getSpecialCommand = module.exports.getSpecialCommand = (input) => {
     if (input.indexOf('@') !== 0)
         return null
 
@@ -105,5 +105,5 @@ const parse = module.exports.parse = (input) =>
         if (isReserved(command))
             throw new InputError(`'${command}' is not available`)
 
-        return resolve(getSpecialCommand(command) || { type: 'input', value: command })
+        return resolve({ type: 'input', value: command })
     })

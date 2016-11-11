@@ -54,6 +54,10 @@ You are facing the north side of a white house. There is no door here, and all t
 If you run into any issues, please [open a bug against the zork-client repo][issues] and not against the game repo.
 
 
+>**💡 Hint**: Use Github's edit button on the `README` file to enter a command, automatically create a branch, and submit a PR entirely online, without ever having to touch a command line.
+
+> **❗ Important**: Anyone can submit changes to any branch/game. Plan accordingly :)
+
 ### Pull Request Requirements
 A valid pull request must pass a few checks before being automatically merged in:
 
@@ -62,22 +66,21 @@ A valid pull request must pass a few checks before being automatically merged in
 * The entered command must only contain letters, numbers, and a few simple punctuators.
 * The request is made against a valid branch. `master` and any `game-*` branches are valid.
 
-> **❗ Important**: If another PR is merged in before your PR targeting the same branch is processed, you must sync again to ensure your PR has no conflicts and meets all the above requirements. This is annoying, makes sense for this style of gameplay.
+> **❗ Important**: If another PR is merged in before your PR targeting the same branch is processed, you must sync again to ensure your PR has no conflicts and meets all the above requirements. This is annoying, makes sense for this style of gameplay. 
 
 
 ### Branch/Game Management
-Two special commands are used to manage the game itself:
+Two special commands are used to manage the game itself. These commands are submitted in the PR title, not through the `README`
 
-* `> @new BRANCHNAME` – Creates a new game on a new branch. The branch will be called `game-BRANCHNAME` and must not already exist.
-* `> @branch TO_BRANCH [FROM_BRANCH]` – Branches a game, creating a new branch to play on. The new branch will be called `game-TO_BRANCH`. If `FROM_BRANCH` is provided, the game is started from that games's current state. Otherwise, the game is branched from the target branch of the PR.
+* `@new BRANCHNAME` – Creates a new game on a new branch. The branch will be called `game-BRANCHNAME` and must not already exist.
+* `@branch TO_BRANCH [FROM_BRANCH]` – Branches a game, creating a new branch to play on. The new branch will be called `game-TO_BRANCH`. If `FROM_BRANCH` is provided, the game is started from that games's current state. Otherwise, the game is branched from the target branch of the PR.
 
-These special commands do not become part of the commit history. They are used only to trigger branch creation. The standard z-machine game management commands (`save`, `restore`, ...) are not supported.
+These special command pull requests do not become part of the commit history. They are used only to trigger branch creation. The standard z-machine game management commands (`save`, `restore`, ...) are not supported.
 
-> **❗ Important**: Anyone can submit changes to any branch/game. Plan accordingly :)
+> **❗ Important**: Again, to create a new game using the Github online interface, edit the readme file in any manner submit a PR with the title `@new BRANCHNAME`.
 
 
-
-### Running the Code
+# Running the Code
 This repo contains the Node.js implementation of the bot that handles pull requests. To get started:
 
 ```bash
