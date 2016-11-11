@@ -1,6 +1,6 @@
 const InputError = require('./input_error')
 
-const MAX_COMMAND_LENGTH = 300
+const MAX_COMMAND_LENGTH = 500
 const COMMAND_REGEXP = /^@?[a-z0-9\-_\.\, \t]+$/i
 
 const MIN_BRANCH_NAME = 1

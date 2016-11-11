@@ -2,7 +2,6 @@
     Webhook listener.
 */
 "use strict"
-const GitHubApi = require("github")
 const program = require("commander")
 const http = require('http')
 const main = require('./pull_request')
@@ -25,12 +24,6 @@ program
 
 const port = (program.port || 3000)
 
-const github = new GitHubApi({
-    version: "3.0.0",
-    headers: {
-        "user-agent": "80x40-client"
-    }
-})
 
 github.authenticate({
     type: "oauth",
@@ -66,6 +59,7 @@ webhookHandler.on('pull_request', (event) => {
 })
 
 console.log("Listening for webhook events on port", port)
+
 http.createServer(function (req, res) {
     webhookHandler(req, res, (err) => {
         res.statusCode = 404
