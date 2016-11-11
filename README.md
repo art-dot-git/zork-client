@@ -2,7 +2,7 @@
 
 # Zork.git
 
-Zork.git is an experiment using git to play a game, in this case, the classic interactive fiction title [Zork]. To start playing, simply [fork the zork.git game repo][game], [enter a command]() by editing the `README`, and submit a PR back against the repo.
+Zork.git is an experiment using git to play a game, in this case, the classic interactive fiction title [Zork]. To start playing, simply [fork the zork.git game repo][game], enter a command by editing the `README`, and submit a PR back against the repo.
 
 ### How it Works
 The main [Zork.git repo][game] is where the game is played, with the `README` file used for game input and output. The starting `README` file looks something like this:
@@ -66,7 +66,9 @@ A valid pull request must pass a few checks before being automatically merged in
 * The entered command must only contain letters, numbers, and a few simple punctuators.
 * The request is made against a valid branch. `master` and any `game-*` branches are valid.
 
-> **❗ Important**: If another PR is merged in before your PR targeting the same branch is processed, you must sync again to ensure your PR has no conflicts and meets all the above requirements. This is annoying, makes sense for this style of gameplay. 
+> **❗ Important**: If another PR is merged in before your PR targeting the same branch is processed, you must sync again to ensure your PR has no conflicts and meets all the above requirements. This is annoying, makes sense for this style of gameplay.
+
+>**💡 Hint**: If you are having trouble submitting a change due to syncing problems, try creating a new branch and playing on it.
 
 
 ### Branch/Game Management
