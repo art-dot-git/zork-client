@@ -9,6 +9,7 @@
   "license": "ISC",
   "dependencies": {
     "commander": "^2.9.0",
+    "diffparser": "^1.1.0",
     "frotz-interfacer": "^1.4.1",
     "git-promise": "^0.3.0",
     "github": "^6.0.3",
