@@ -6,6 +6,7 @@ const program = require("commander")
 const http = require('http')
 const main = require('./src/pull_request')
 const seqqueue = require('seq-queue')
+const githubClient = require('./src/github')
 
 const config = require('./config')
 
@@ -24,11 +25,8 @@ program
 
 const port = (program.port || 3000)
 
+const github = githubClient.getClient(program.token)
 
-github.authenticate({
-    type: "oauth",
-    token: program.token
-})
 
 const webhookHandler = require('github-webhook-handler')({
     path: '/',
@@ -41,18 +39,17 @@ webhookHandler.on('pull_request', (event) => {
         console.log('ignoring action', action)
         return
     }
-    taskQueue.push((task) => {
-        main.handlePullRequest(github, config.user, config.repo,
-            event.payload.number,
-            (err) => {
-                if (err) {
-                    console.error("ERROR", err)
-                } else {
+    taskQueue.push(
+        (task) =>
+            main.handlePullRequest(github, event.payload.number).then(
+                _ => {
                     console.log("OK")
-                }
-                task.done()
-            })
-    },
+                    task.done()
+                },
+                (err) => {
+                    console.error("ERROR", err)
+                    task.done()
+            }),
         () => {
             console.error("Timeout")
         })
