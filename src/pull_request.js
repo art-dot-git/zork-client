@@ -32,6 +32,12 @@ const getPrBranchName = number =>
     `pr-${number}`
 
 /**
+ * Get the url to view a branch
+ */
+const getBranchViewUrl = branchName =>
+    `${config.repo_url}/tree/${branchName}#readme`
+
+/**
  * 
  */
 const getGameBranchName = name => {
@@ -156,7 +162,7 @@ const tryRunGameCommand = (github, prNumber, prBranch, targetBranch, command) =>
                         return git(`push origin ${targetBranch}`).then(_ => result)
                     return result
                 })
-                .then(_ => postComment(github, prNumber, `**SUCCESS**\n\n\\> ${mdEscape(command.value)}\n\n ${mdEscape(result)}`)))
+                .then(_ => postComment(github, prNumber, `**SUCCESS**\n\n\\> ${mdEscape(command.value)}\n\n ${mdEscape(result)}\n\n[${targetBranch}](${getBranchViewUrl(targetBranch)})`)))
 
 /**
  * 
@@ -178,7 +184,7 @@ const tryCreateBranch = (github, prNumber, from, to) =>
                 return git(`push origin ${to}`).then(_ => result)
             return result
         })
-        .then(_ => postComment(github, prNumber, `**SUCCESS**\n\nCreated new game branch [${to}](${config.repo_url + '/tree/' + to})`))
+        .then(_ => postComment(github, prNumber, `**SUCCESS**\n\nCreated new game branch [${to}](${getBranchViewUrl(to)})`))
         .then(_ => closePr(github, prNumber, from))
 
 /**
