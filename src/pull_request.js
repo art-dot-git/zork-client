@@ -130,7 +130,7 @@ const validateChangeContents = (diff, targetFileContents) => {
  * 
  */
 const validatePullRequest = (prBranch, targetBranch) =>
-    git(`diff -U0 origin/${targetBranch} ${prBranch}`)
+    git(`diff -U0 ${targetBranch} ${prBranch}`)
         .then(parseDiff)
         .then(validateFilesChanged)
         .then(diff =>
@@ -254,22 +254,24 @@ const processPullRequest = (github, request) => {
         }
     }
 
-    const branchName = request.base.ref
+    const targetBranch = request.base.ref
     const otherBranch = request.head.ref
     const sha = request.head.sha
 
     console.log('Processing ' + sha)
 
-    if (!otherBranch.match(BRANCH_REGEXP) || !branchName.match(BRANCH_REGEXP))
+    if (!otherBranch.match(BRANCH_REGEXP) || !targetBranch.match(BRANCH_REGEXP))
         return Promise.reject("Invalid branch name")
 
     // Check to see if this is a special command
     return command.getSpecialCommand(request.title).then(special => {
         if (special)
-            return tryRunCommand(github, request.number, null, branchName, special)
+            return tryRunCommand(github, request.number, null, targetBranch, special)
 
-        return checkoutPr(request.number)
-            .then(prBranch => tryMergePullRequest(github, request.number, prBranch, branchName))
+        return git(`checkout -f ${targetBranch}`)
+            .then(_ => git(`pull origin ${targetBranch}`))
+            .then(_ => checkoutPr(request.number))
+            .then(prBranch => tryMergePullRequest(github, request.number, prBranch, targetBranch))
     })
 }
 

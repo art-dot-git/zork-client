@@ -10,7 +10,7 @@ const repo_organization = "mattbierner"
 
 module.exports = {
     // Debugging
-    post_comments: true,
+    post_comments: false,
     allow_all_users: false,
     allowed_users: ['mattbierner', 'greyepoxy'],
     
