@@ -124,7 +124,7 @@ const validateChangeContents = (diff, targetFileContents) => {
  * 
  */
 const validatePullRequest = (prBranch, targetBranch) =>
-    git(`diff -U0 ${targetBranch} ${prBranch}`)
+    git(`diff -U0 origin/${targetBranch} ${prBranch}`)
         .then(parseDiff)
         .then(validateFilesChanged)
         .then(diff =>
