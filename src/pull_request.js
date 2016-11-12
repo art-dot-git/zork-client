@@ -241,7 +241,7 @@ const processPullRequest = (github, request) => {
     }
 
     // Check auth
-    const user = request.user
+    const user = request.user && request.user.login
     if (!config.allow_all_users) {
         if (config.allowed_users.indexOf(user) === -1) {
             return Promise.reject('Unauthorized user. Contact @mattbierner to get authorized for beta testing or wait for offical release')
