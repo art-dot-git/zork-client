@@ -15,10 +15,6 @@ const BRANCH_REGEXP = /^[a-z0-9\-_]{1,200}$/i
 
 const gameBranchPrefix = 'game-'
 
-/// Should error attempt to post error comments back to github.
-const PUSH = true
-
-
 /**
  * Execute a git command on the game repo.
  */
@@ -113,7 +109,7 @@ const validateChangeContents = (diff, targetFileContents) => {
 
     const lineCount = targetFileContents.split(/\r\n|\r|\n/).length
     if (chunk.newStart !== chunk.oldStart || chunk.newStart !== lineCount)
-        throw new ChangeError("Change must only add input at end of file (2)")
+        throw new ChangeError(`Change must only add input at end of file (2) { oldStart: ${chunk.oldStart}, newStart: ${chunk.newStart}, len: ${lineCount}}`)
 
     if (chunk.changes.length !== 2)
         throw new ChangeError("Change must only add input at end of file (3)")
@@ -158,7 +154,7 @@ const tryRunGameCommand = (github, prNumber, prBranch, targetBranch, command) =>
             git(`add ${config.log_file_name} ${config.save_file_name}`)
                 .then(_ => git(`commit -m "> ${command.value}"`))
                 .then(result => {
-                    if (PUSH)
+                    if (config.push)
                         return git(`push origin ${targetBranch}`).then(_ => result)
                     return result
                 })

@@ -11,6 +11,8 @@ const repo_organization = "mattbierner"
 module.exports = {
     // Debugging
     post_comments: true,
+    push: true,
+
     allow_all_users: false,
     allowed_users: ['mattbierner', 'greyepoxy'],
     
