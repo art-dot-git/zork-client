@@ -14,6 +14,6 @@ program
 
 const github = githubClient.getClient(program.token)
 
-main.handlePullRequest(github, program.number)
+main.handlePullRequestNumber(github, program.number)
     .then(_ => console.log(`Successfully processed ${program.number}`))
     .catch(e => console.log(`Error processing ${program.number} - ${e}`))

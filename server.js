@@ -41,7 +41,7 @@ webhookHandler.on('pull_request', (event) => {
     }
     taskQueue.push(
         (task) =>
-            main.handlePullRequest(github, event.payload.number).then(
+            main.handlePullRequest(github, event.payload).then(
                 _ => {
                     console.log("OK")
                     task.done()

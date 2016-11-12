@@ -240,6 +240,14 @@ const processPullRequest = (github, request) => {
         return ''
     }
 
+    // Check auth
+    const user = request.user
+    if (!config.allow_all_users) {
+        if (config.allowed_users.indexOf(user) === -1) {
+            throw 'Unauthorized user. Contact @mattbierner to get authorized for beta testing or wait for offical release'
+        }
+    }
+
     const branchName = request.base.ref
     const otherBranch = request.head.ref
     const sha = request.head.sha
@@ -262,9 +270,16 @@ const processPullRequest = (github, request) => {
 /**
  * Attempt to handle a single pull request.
  */
-const handlePullRequest = module.exports.handlePullRequest = (github, prNumber, noRetry) =>
-    getPullRequest(github, prNumber)
-        .then(pullRequest => processPullRequest(github, pullRequest))
+const handlePullRequest = module.exports.handlePullRequest = (github, pullRequest) =>
+    processPullRequest(github, pullRequest)
         .catch(err =>
             onPrError(github, prNumber, err).then(_ => { throw err }, _ => { throw err }))
+
+
+/**
+ * Attempt to handle a single pull request by number.
+ */
+const handlePullRequestNumber = module.exports.handlePullRequestNumber = (github, prNumber) =>
+    getPullRequest(github, prNumber)
+        .then(pullRequest => handlePullRequest(github, pullRequest))
 
