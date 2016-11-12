@@ -162,7 +162,7 @@ const tryRunGameCommand = (github, prNumber, prBranch, targetBranch, command) =>
                         return git(`push origin ${targetBranch}`).then(_ => result)
                     return result
                 })
-                .then(_ => postComment(github, prNumber, `**SUCCESS**\n\n\\> ${mdEscape(command.value)}\n\n ${mdEscape(result)}\n\n[${targetBranch}](${getBranchViewUrl(targetBranch)})`)))
+                .then(_ => postComment(github, prNumber, `**SUCCESS**: [${targetBranch}](${getBranchViewUrl(targetBranch)})\n\n\\> ${mdEscape(command.value)}\n\n ${mdEscape(result)}`)))
 
 /**
  * 
