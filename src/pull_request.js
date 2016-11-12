@@ -273,7 +273,7 @@ const processPullRequest = (github, request) => {
 const handlePullRequest = module.exports.handlePullRequest = (github, pullRequest) =>
     processPullRequest(github, pullRequest)
         .catch(err =>
-            onPrError(github, prNumber, err).then(_ => { throw err }, _ => { throw err }))
+            onPrError(github, pullRequest.number, err).then(_ => { throw err }, _ => { throw err }))
 
 
 /**
