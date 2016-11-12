@@ -233,18 +233,18 @@ const tryMergePullRequest = (github, prNumber, prBranch, targetBranch) =>
  */
 const processPullRequest = (github, request) => {
     if (!request || !request.head || !request.head.repo || !request.base)
-        throw "Error getting pull request"
+        return Promise.reject("Error getting pull request")
 
     if (request.state !== 'open') {
         console.log(`Not processing non-open pr ${request.number}`)
-        return ''
+        return Promise.resolve('')
     }
 
     // Check auth
     const user = request.user
     if (!config.allow_all_users) {
         if (config.allowed_users.indexOf(user) === -1) {
-            throw 'Unauthorized user. Contact @mattbierner to get authorized for beta testing or wait for offical release'
+            return Promise.reject('Unauthorized user. Contact @mattbierner to get authorized for beta testing or wait for offical release')
         }
     }
 
@@ -255,7 +255,7 @@ const processPullRequest = (github, request) => {
     console.log('Processing ' + sha)
 
     if (!otherBranch.match(BRANCH_REGEXP) || !branchName.match(BRANCH_REGEXP))
-        throw "Invalid branch name"
+        return Promise.reject("Invalid branch name")
 
     // Check to see if this is a special command
     return command.getSpecialCommand(request.title).then(special => {
