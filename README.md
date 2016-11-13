@@ -7,7 +7,7 @@ This repo contains playing instructions and the bot code used to process pull re
 Developed as part of [GitHub Game Off 2016](https://github.com/github/game-off-2016). [Official GGO16 Entry](https://github.com/mattbierner/game-off-2016)
 
 
-### How it Works
+### How to Play
 The main [Zork.git repo][game] is where the game is played, with the `README` file used for game input and output. The starting `README` file looks something like this:
 
 ```
@@ -78,7 +78,7 @@ These special command pull requests do not become part of the commit history. Th
 > **❗ Important**: Again, to create a new game using the Github online interface, edit the `README` in any manner and submit a PR with the title `@new BRANCHNAME`.
 
 
-## Running
+## Installing and Running the Game
 
 ### Prerequisites
 Install the dumb version of `frotz`, `dfrotz`:
