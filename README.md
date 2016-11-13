@@ -2,7 +2,7 @@
 
 Zork.git is an experiment in using git to play a game, in this case, the classic interactive fiction title [Zork]. To start playing, simply [fork the zork.git game repo][game], enter a command by editing the `README`, and submit a PR back against the game repo.
 
-Developed as part of [GitHub Game Off 2016](https://github.com/github/game-off-2016). [Offical Entry](https://github.com/mattbierner/game-off-2016)
+Developed as part of [GitHub Game Off 2016](https://github.com/github/game-off-2016). [Official Entry](https://github.com/mattbierner/game-off-2016)
 
 
 ### How it Works
@@ -69,15 +69,14 @@ A valid pull request must pass a few checks before being automatically merged in
 Two special commands are used to manage the game itself. These commands are submitted in the PR title, not through the `README`
 
 * `@new BRANCHNAME` – Creates a new game on a new branch. The branch will be called `game-BRANCHNAME` and must not already exist.
-* `@branch TO_BRANCH [FROM_BRANCH]` – Branches a game, creating a new branch to play on. The new branch will be called `game-TO_BRANCH`. If `FROM_BRANCH` is provided, the game is started from that games's current state. Otherwise, the game is branched from the target branch of the PR.
+* `@branch TO_BRANCH [FROM_BRANCH]` – Branches a game, creating a new branch to play on. The new branch will be called `game-TO_BRANCH`. If `FROM_BRANCH` is provided, the game is started from that Game's current state. Otherwise, the game is branched from the target branch of the PR.
 
 These special command pull requests do not become part of the commit history. They are used only to trigger branch creation. The standard z-machine game management commands (`save`, `restore`, ...) are not supported.
 
-> **❗ Important**: Again, to create a new game using the Github online interface, edit the readme file in any manner and submit a PR with the title `@new BRANCHNAME`.
+> **❗ Important**: Again, to create a new game using the Github online interface, edit the `README` in any manner and submit a PR with the title `@new BRANCHNAME`.
 
 
 ## Running
-Given the nature of Zork.git, this repository only contains instructions for how to set up
 
 ### Prerequisites
 Install the dumb version of `frotz`, `dfrotz`:
@@ -141,7 +140,7 @@ You can tweak the other configuration options to play a different game or change
 ### Github Configuration
 The bot requires a [Personal Github Access Token](https://github.com/blog/1509-personal-api-tokens) to function.
 
-Additionally, if you are running the bot as a server that automatically merges pull requests, you must setup a Github webook on the game repo that points to where the bot will be publically accessible. This webhook should send pull request events. 
+Additionally, if you are running the bot as a server that automatically merges pull requests, you must setup a Github webhook on the game repo that points to where the bot will be publicly accessible. This webhook should send pull request events. 
 
 
 ### Running
@@ -165,7 +164,7 @@ Use forever to launch `server.js` and keep it running:
 forever start server.js --number 18 --port 6910 --token "GITHUB_TOKEN" --secret "WEBHOOK_SECRET"
 ```
 
-If everything went as expected, PRs agains the game repo 
+If everything went as expected, PRs against the game repo should be automatically processed and merged. 
 
 
 
