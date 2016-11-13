@@ -31,7 +31,7 @@ const exec = (command) => {
         outputFilter: frotz.filter
     })
 
-    interfaces.dfrotz.stdout.on('error', (err) => {
+    interfacer.dfrotz.stdout.on('error', (err) => {
         if (err.code == "EPIPE") {
             // noop
         }
