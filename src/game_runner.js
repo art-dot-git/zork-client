@@ -31,6 +31,12 @@ const exec = (command) => {
         outputFilter: frotz.filter
     })
 
+    interfaces.dfrotz.stdout.on('error', (err) => {
+        if (err.code == "EPIPE") {
+            // noop
+        }
+    })
+
     return new Promise((resolve, reject) =>
         interfacer.iteration(command.value, (error, output) =>
             error && error.error
