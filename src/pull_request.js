@@ -176,7 +176,7 @@ const tryCreateBranch = (github, prNumber, from, to) =>
         })
         .then(_ => git(`checkout -B ${to} ${from}`).fail(_ => { throw "branch creation failed"; }))
         .then(result => {
-            if (PUSH)
+            if (config.push)
                 return git(`push origin ${to}`).then(_ => result)
             return result
         })
