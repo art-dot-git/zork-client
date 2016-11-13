@@ -1,23 +1,24 @@
 const path = require('path')
 
-const GAME_ROOT = path.join(__dirname, '../test')
-
+// Local git repo for game
+const GAME_ROOT = path.join(__dirname, '../zork-dot-git')
 const log_file_name = "README"
 const save_file_name = 'zork1.dat'
 
-const repo_name = "art-z-test"
-const repo_organization = "mattbierner"
+// Github repo for game
+const repo_organization = "art-dot-git"
+const repo_name = "zork-dot-git"
 
 module.exports = {
     // Debugging
     post_comments: true,
     push: true,
 
-    allow_all_users: false,
-    allowed_users: ['mattbierner', 'greyepoxy'],
+    allow_all_users: true,
+    allowed_users: ['mattbierner'],
     
-    // game
-    frotz_exe: '../frotz/dfrotz',
+    // Game
+    frotz_exe: path.join(__dirname, '../frotz/dfrotz'),
 
     game_root: GAME_ROOT,
     game_file: path.join(GAME_ROOT, 'zork1.z5'),
@@ -32,9 +33,8 @@ module.exports = {
     "issue_tracker_url": "https://github.com/art-dot-git/zork-client/issues",
     "about_url": "https://github.com/art-dot-git/zork-client",
 
-    new_game_commit: "f8f53aee2e56019f7d17eafab0e969659eadb0a5",
+    new_game_commit: "4876beaba2c96cc5967b5025444db9a66268d947",
 
-    user: "the-gamemaster",
     repo_name: repo_name,
     repo_organization: repo_organization,
     repo: `git@github.com:${repo_organization}/${repo_name}.git`,
