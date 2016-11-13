@@ -39,9 +39,11 @@ webhookHandler.on('pull_request', (event) => {
         console.log('ignoring action', action)
         return
     }
+
+    const pullRequest = event.payload.pull_request
     taskQueue.push(
         (task) =>
-            main.handlePullRequest(github, event.payload.pull_request).then(
+            main.handlePullRequest(github, pullRequest).then(
                 _ => {
                     console.log("OK")
                     task.done()
@@ -54,6 +56,11 @@ webhookHandler.on('pull_request', (event) => {
             console.error("Timeout")
         })
 })
+
+webhookHandler.on('error', function (err) {
+    console.error('Handler Error: ', err)
+})
+
 
 console.log("Listening for webhook events on port", port)
 
