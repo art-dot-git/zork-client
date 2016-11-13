@@ -148,7 +148,6 @@ const validateTargetBranchNameForGameCommand = targetBranch => {
 const tryRunGameCommand = (github, prNumber, prBranch, targetBranch, command) =>
     validateTargetBranchNameForGameCommand(targetBranch)
         .then(_ => git(`checkout -f ${targetBranch}`))
-        .then(_ => git(`reset --hard origin/${targetBranch}`))
         .then(_ => git(`merge ${prBranch}`))
         .then(_ => game.iterate(command))
         .then(result =>
@@ -267,6 +266,7 @@ const processPullRequest = (github, request) => {
 
         return git(`checkout -f ${targetBranch}`)
             .then(_ => git(`pull origin ${targetBranch}`))
+            .then(_ => git(`reset --hard origin/${targetBranch}`))
             .then(_ => checkoutPr(request.number))
             .then(prBranch => tryMergePullRequest(github, request.number, prBranch, targetBranch))
     })
