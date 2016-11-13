@@ -61,6 +61,11 @@ webhookHandler.on('error', function (err) {
     console.error('Handler Error: ', err)
 })
 
+process.stdout.on('error', err => {
+    if (err.code === "EPIPE") {
+        console.log('Epipe top level')
+    }
+})
 
 console.log("Listening for webhook events on port", port)
 
