@@ -1,8 +1,10 @@
-# Zork.git
+# Zork.git Client
 
 Zork.git is an experiment in using git to play a game, in this case, the classic interactive fiction title [Zork]. To start playing, simply [fork the zork.git game repo][game], enter a command by editing the `README`, and submit a PR back against the game repo.
 
-Developed as part of [GitHub Game Off 2016](https://github.com/github/game-off-2016). [Official Entry](https://github.com/mattbierner/game-off-2016)
+This repo contains playing instructions and the bot code used to process pull requests.
+
+Developed as part of [GitHub Game Off 2016](https://github.com/github/game-off-2016). [Official GGO16 Entry](https://github.com/mattbierner/game-off-2016)
 
 
 ### How it Works
@@ -165,7 +167,6 @@ forever start server.js --number 18 --port 6910 --token "GITHUB_TOKEN" --secret 
 ```
 
 If everything went as expected, PRs against the game repo should be automatically processed and merged. 
-
 
 
 
