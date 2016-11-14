@@ -175,5 +175,5 @@ If everything went as expected, PRs against the game repo should be automaticall
 All credits for Zork goes to Tim Anderson, Marc Blank, Bruce Daniels, and Dave Lebling
 
 [zork]: https://en.wikipedia.org/wiki/Zork
-[game]: https://github.com/art-dot-git/zork-git
+[game]: https://github.com/art-dot-git/zork-dot-git
 [issues]: https://github.com/art-dot-git/zork-client/issues
