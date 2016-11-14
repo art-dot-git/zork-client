@@ -157,13 +157,13 @@ node index.js --number 18 --token "GITHUB_TOKEN"
 The `server.js` script starts a server to process pull requests
 
 ```bash
-node server.js --number 18 --port 6910 --token "GITHUB_TOKEN" --secret "WEBHOOK_SECRET"
+node server.js --port 6910 --token "GITHUB_TOKEN" --secret "WEBHOOK_SECRET"
 ```
 
 Use forever to launch `server.js` and keep it running:
 
 ```bash
-forever start server.js --number 18 --port 6910 --token "GITHUB_TOKEN" --secret "WEBHOOK_SECRET"
+forever start server.js --port 6910 --token "GITHUB_TOKEN" --secret "WEBHOOK_SECRET"
 ```
 
 If everything went as expected, PRs against the game repo should be automatically processed and merged. 
